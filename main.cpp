@@ -8,8 +8,253 @@
 //
 //Note: the sections are unknown because we couldn’t register due to the website fall.
 //
+
 #include"image_Class.h"
 using namespace std ;
+void adjustBrightness(Image &image) {
+
+    std::cout << "Do you want the image darker or lighter? (d/l)\n";
+    std::string s;
+    std::cin >> s;
+
+    float factor;
+    if (s == "d") {
+        factor = 0.5;
+    }
+    else if (s == "l") {
+        factor = 1.5;
+    }
+
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            for (int k = 0; k < image.channels; k++) {
+                int y = image(i, j, k) * factor;
+                if (y > 255) {
+                    y = 255;
+                }
+                else if (y < 0) {
+                    y = 0;
+                }
+                image(i, j, k) = y;
+            }
+        }
+    }
+}
+
+void AddFrame(Image &image) {
+
+    cout<< "Do you want a simple with one color or decorated with two colors or captured?"
+    << " (s/d/c) ";
+    string input;
+    cin >> input;
+
+    if (input == "c") {
+
+        double frameW = image.width *0.015;
+        double frameH = image.height *0.015;
+        for (int i = 1; i <image.width; i++) {
+            for (int j = 1; j < image.height; j++) {
+                if (
+
+    (i >= frameW * 0.5 && i < frameW) ||
+
+
+    (i >= image.width - frameW && i < image.width - frameW * 0.5) ||
+    (j >= frameH * 0.5 && j < frameH) ||
+    (j >= image.height - frameH && j < image.height - frameH * 0.5)
+) {
+                    image(i, j, 0) = 255;
+                    image(i, j, 1) = 255;
+                    image(i, j, 2) = 255;
+}
+
+            }
+        }
+
+    }
+
+    else if (input == "s") {
+        cout <<"Which color do you want for the frame? (white,black,gold,silver,blue,red,green,yellow,purple)";
+        string color;
+        cin >> color;
+        int red, green, blue;
+        double frameW = image.width *0.015;//length of the frame
+        double frameH = image.height *0.015;//length of the frame
+
+        if (color == "blue") {
+            red =0;    green =0;    blue =255;
+        }
+        else if (color == "red") {
+            red =255;  green =0;    blue =0;
+        }
+        else if (color == "green") {
+            red =0;    green =255;  blue =0;
+        }
+        else if (color == "yellow") {
+            red =255;  green =255;  blue =0;
+        }
+        else if (color == "purple") {
+            red =160;  green =32;   blue =240;
+        }
+        else if (color == "white") {
+            red =255;  green =255;  blue =255;
+        }
+        else if (color == "black") {
+            red =0;    green =0;    blue =0;
+        }
+        else if (color == "gold") {
+            red =255;  green =215;  blue =0;
+        }
+        else if (color == "silver") {
+            red =192;  green =192;  blue =192;
+        }
+
+
+        for (int i = 0; i < image.width; i++) {
+            for (int j = 0; j < image.height; j++) {
+                if (i < frameW || i >= image.width - frameW ||
+                    j < frameH || j >= image.height - frameH) {
+                    image(i, j, 0) = red;
+                    image(i, j, 1) = green;
+                    image(i, j, 2) = blue;
+                }
+            }
+        }
+
+    }
+    else if (input == "d") {
+        double frameW = image.width *0.015; //length of the frame
+        double frameH = image.height *0.015; // length of the frame
+        int red1, green1, blue1, red2, green2, blue2;
+        cout<< "which design do you want?\n 1.Royal Red 2.Steel Blue 3. Black Gold 4. White Gold 5. Soft Burgundy 6. Forest Gold";
+        string color1;
+        cin >> color1;
+        switch (color1[0]) {
+            case '1':
+                red1 = 218; red2 = 139;
+            green1 = 165; green2 = 0;
+            blue1 = 32; blue2 = 0;
+            break;
+
+            case '2':
+                red1 = 192; red2 = 0;
+            green1 = 192; green2 = 0;
+            blue1 = 192; blue2 = 128;
+            break;
+
+            case '3':
+                red1 = 0; red2 = 255;
+            green1 = 0; green2 = 215;
+            blue1 = 0; blue2 = 0;
+            break;
+
+            case '4':
+                red1 = 255; red2 = 255;
+            green1 = 255; green2 = 215;
+            blue1 = 255; blue2 = 0;
+            break;
+
+            case '5':
+                red1 = 128; red2 = 245;
+            green1 = 0; green2 = 245;
+            blue1 = 32; blue2 = 220;
+            break;
+
+            case '6':
+                red1 = 34; red2 = 218;
+            green1 = 70; green2 = 165;
+            blue1 = 34; blue2 = 32;
+            break;
+
+            default:
+                cout << "Invalid choice!\n";
+            break;
+        }
+        for (int i = 1; i < image.width; i++) {
+            for (int j = 1; j < image.height; j++) {
+                if (i<frameW/2 || i>= image.width- frameW/2 || j<frameH/2 || j>= image.height - frameH/2) {
+                    image(i, j, 0) = red1;
+                    image(i, j, 1) = green1;
+                    image(i, j, 2) = blue1;
+
+                }
+                else if (frameW>i || frameH>j || i>= image.width- frameW || j>= image.height - frameH) {
+                    image(i, j, 0) = red2;
+                    image(i, j, 1) = green2;
+                    image(i, j, 2) = blue2;
+
+                }
+            }
+        }
+    }
+}
+Image To_gray(Image &image) {
+    for (int i=0 ;i<image.width;++i){
+        for (int j=0;j<image.height;++j) {
+            unsigned int avg=0 ;
+            for (int k=0;k<image.channels;++k) {
+                avg+=image(i,j,k);
+            }
+            avg = avg /3;
+            for (int k=0;k<image.channels;++k) {
+                image(i,j,k)=avg;
+            }
+        }
+    }
+    return image;
+}
+
+
+
+void edgeDetection(Image &image) {
+
+    To_gray(image);
+
+    Image copy(image.width, image.height);
+
+    int sobelX[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+
+    int sobelY[3][3] = {
+        {-1, -2, -1},
+        { 0,  0,  0},
+        { 1,  2,  1}
+    };
+
+    for (int i = 1; i < image.width - 1; i++) {
+        for (int j = 1; j < image.height - 1; j++) {
+            int gx = 0, gy = 0;
+
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    int pixel1 = image(i + dx, j + dy, 0);
+                    gx += pixel1 * sobelX[dx + 1][dy + 1];
+                    gy += pixel1 * sobelY[dx + 1][dy + 1];
+                }
+            }
+
+            int magnitude = sqrt(gx * gx + gy * gy);
+            int threshold = 100;
+
+            if (magnitude > threshold) {
+                copy(i, j, 0) = 0;
+                copy(i, j, 1) = 0;
+                copy(i, j, 2) = 0;
+            } else {
+                copy(i, j, 0) = 255;
+                copy(i, j, 1) = 255;
+                copy(i, j, 2) = 255;
+            }
+        }
+    }
+image=copy;
+}
+
+
+
 void to_gray(Image &image) {
     for (int i=0 ;i<image.width;++i){
         for (int j=0;j<image.height;++j) {
@@ -273,6 +518,18 @@ int main(){
         else if(modify_name=="9" || modify_name=="Crop Image") {
                 crop(img);
                 saving(img);
+        }
+        else if(modify_name=="10" || modify_name=="Edge Detection ") {
+           edgeDetection(img);
+            saving(img);
+        }
+        else if(modify_name=="11" || modify_name=="Add Frame") {
+            AddFrame(img);
+            saving(img);
+        }
+        else if(modify_name=="12" || modify_name=="Adjust Brightness") {
+            adjustBrightness(img);
+            saving(img);
         }
         else if (modify_name=="20" || modify_name=="Save") {
             saving(img);
