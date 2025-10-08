@@ -1,4 +1,3 @@
-
 //Firstly, we have the void functions which contain filters, save functions,
 //Then the int main function which contains the menu which runs the program and integrates it with each other, It handles the user interaction, shows the available filters, takes the input, and calls the correct filter function.
 //
@@ -34,7 +33,7 @@ void to_BlackandWhite(Image &image) {
 
             }
             avg = avg /3;
-            unsigned char bw = (avg >= 128) ? 255 : 0;
+            unsigned int bw = (avg >= 128) ? 255 : 0;
 
             for (int k = 0; k < image.channels; ++k) {
                 image(i, j, k) = bw;
@@ -94,13 +93,8 @@ void rotate270( Image &image) {
     }
     image = temp ;
 }
-void reize (Image &image) {
+void resize (Image &image,int width ,int height) {
     // string filename;
-    int width,height;
-    cout<<"Pls Enter image width : ";
-    cin>>width;
-    cout<<"Pls Enter image height : ";
-    cin>>height;
     Image resized_image(width, height);
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
@@ -127,8 +121,7 @@ void inverted (Image &image) {
 // filter 5
 void flipImage(Image &image) {
 
-
-Image copy(image);
+    Image copy(image);
 
     std::cout << "Do you want it flip vertical or horizontal? (v/h)\n";
     std::string s;
@@ -150,12 +143,70 @@ Image copy(image);
 
 }
 
+Image merge(Image &image1 ,Image &image2) {
+    Image temp(image1.width, image1.height);
+int image1_widht = image1.width;
+int image1_height = image1.height;
+int image2_widht = image2.width;
+int image2_height = image2.height;
+if(image1_widht == image2_widht && image1_height == image2_height) {
+    for (int i=0; i < image1.width; ++i) {
+        for (int j=0; j < image1.height; ++j) {
+            unsigned int avg=0 ;
+            unsigned int avg2=0 ;
+            for (int k=0; k < image1.channels; ++k) {
+                avg=image1(i,j, k)/2;
+                avg2=image2(i,j, k)/2;
+                temp(i,j,k) = avg + avg2;
+            }
+        }
+    }
+    return temp;
+}
+else {
+resize(image2,image1.width,image1.height);
+    for (int i=0; i < image1.width; ++i) {
+        for (int j=0; j < image1.height; ++j) {
+            unsigned int avg=0 ;
+            unsigned int avg2=0 ;
+            for (int k=0; k < image1.channels; ++k) {
+                avg=image1(i,j, k)/2;
+                avg2=image2(i,j, k)/2;
+                temp(i,j,k) = avg + avg2;
+            }
+        }
+    }
+    return temp;
+
+}
+
+}
+Image crop(Image &img) {
+    int width,height,x,y;
+    cout<<"Enter X Start Point";
+    cin>>x;
+    cout<<"Enter Y Start Point";
+    cin>>y;
+    cout<<"Enter the Width";
+    cin>>width;
+    cout<<"Enter the Height";
+    cin>>height;
+    Image temp(width,height);
+    for (int i=0; i < width; ++i) {
+        for (int j=0; j <height; ++j) {
+            for (int k=0; k < img.channels; ++k) {
+                temp(i, j, k) = img(x + i, y + j, k);
+            }
+        }
+    }
+return temp;
+}
 int main(){
     Image img;
     string modify_name ,img_path ;
 
     cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Save \t 9:Exit \n Chose By mentioned name or Number :  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 20:Save \t 21:Exit \n Chose By mentioned name or Number :  ";
     while (true) {
         cin>>modify_name;
         if (modify_name=="1" || modify_name=="Load a New Image") {
@@ -164,7 +215,7 @@ int main(){
             img.loadNewImage(img_path);
             cout<<img_path<<" Loaded \n";
             cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Save \t 9:Exit \n  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 20:Save \t 21:Exit \n  ";
             cout<<"Choose the filter you want : ";
         }
 
@@ -177,14 +228,19 @@ int main(){
             saving(img);
         }
         else if (modify_name=="4" || modify_name=="Resize Image") {
-            reize(img);
+            int width,height;
+            cout<<"Pls Enter image width : ";
+            cin>>width;
+            cout<<"Pls Enter image height : ";
+            cin>>height;
+            resize(img,width,height);
             saving(img);
         }
         else if (modify_name=="5" || modify_name=="Invert Image") {
             inverted(img);
             saving(img);
         }
-        else if (modify_name=="6" || modify_name=="Invert Image") {
+        else if (modify_name=="6" || modify_name=="Flip Image") {
             flipImage(img);
             saving(img);
         }
@@ -205,11 +261,24 @@ int main(){
                 saving(img);
             }
         }
-        else if (modify_name=="8" || modify_name=="Save") {
+        else if (modify_name=="8" || modify_name=="Merge Image") {
+            Image img2 ;
+            string image2_path ;
+            cout<<"Enter the image2 path : ";
+            cin>>image2_path; ;
+            img2.loadNewImage(image2_path); ;
+            img=merge(img,img2);
+            saving(img);
+        }
+        else if(modify_name=="9" || modify_name=="Crop Image") {
+                crop(img);
+                saving(img);
+        }
+        else if (modify_name=="20" || modify_name=="Save") {
             saving(img);
             cout<<"Image Saved Successfully";
         }
-        else if (modify_name=="9" || modify_name=="Exit") {
+        else if (modify_name=="21" || modify_name=="Exit") {
             break;
         }
 
