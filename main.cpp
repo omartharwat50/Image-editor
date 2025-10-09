@@ -15,7 +15,7 @@ using namespace std ;
 
 
 void TV_Filter(Image &image) {
-   
+
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
             for (int k = 0; k < image.channels; ++k) {
@@ -558,7 +558,7 @@ int main(){
     string modify_name ,img_path ;
 
     cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 20:Save \t 21:Exit \n  Chose By mentioned name or Number :  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 16:Old TV 20:Save \t 21:Exit \n  Chose By mentioned name or Number :  ";
     while (true) {
         cin>>modify_name;
         if (modify_name=="1" || modify_name=="Load a New Image") {
@@ -567,7 +567,7 @@ int main(){
             img.loadNewImage(img_path);
             cout<<img_path<<" Loaded \n";
             cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 20:Save \t 21:Exit \n  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 16:Old TV 20:Save \t 21:Exit \n  ";
             cout<<"Choose the filter you want : ";
         }
 
@@ -648,6 +648,10 @@ int main(){
         }
         else if(modify_name=="15" || modify_name=="Warm") {
             To_Warm(img);
+            saving(img);
+        }
+        else if(modify_name=="16" || modify_name=="TV Filter") {
+            TV_Filter(img);
             saving(img);
         }
         else if (modify_name=="20" || modify_name=="Save") {
