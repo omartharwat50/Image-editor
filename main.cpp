@@ -11,6 +11,71 @@
 
 #include"image_Class.h"
 using namespace std ;
+#include <iostream>
+using namespace std;
+
+void Purpleinvert(Image &image) {
+
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+
+            int r = image(i, j, 0) ;
+            int g = image(i, j, 1) ;
+            int b = image(i, j, 2) ;
+
+
+            image(i, j, 0)=r ;
+            image(i, j, 1)=g*0.45 ;
+            image(i, j, 2)=b ;
+
+
+
+        }
+    }
+
+
+
+}
+
+void Blur( Image &image) {
+
+
+    Image blurred_image(image.width, image.height);
+
+    int blurRadius = 6;
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            int total_r = 0, total_g = 0, total_b = 0;
+            int count = 0;
+
+            for (int x = 0; x <= blurRadius * 2; ++x) {
+                for (int y = 0; y <= blurRadius * 2; ++y) {
+                    int newX = i + x;
+                    int newY = j + y;
+
+                    if (newX >= 0 && newX < image.width && newY >= 0 && newY < image.height) {
+                        total_r += image(newX, newY, 0);
+                        total_g += image(newX, newY, 1);
+                        total_b += image(newX, newY, 2);
+                        count++;
+                    }
+                }
+            }
+
+            blurred_image(i, j, 0) = total_r / count;
+            blurred_image(i, j, 1) = total_g / count;
+            blurred_image(i, j, 2) = total_b / count;
+        }
+    }
+
+
+    image=blurred_image;
+
+
+}
 void adjustBrightness(Image &image) {
 
     std::cout << "Do you want the image darker or lighter? (d/l)\n";
@@ -451,7 +516,7 @@ int main(){
     string modify_name ,img_path ;
 
     cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 20:Save \t 21:Exit \n Chose By mentioned name or Number :  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \n 20:Save \t 21:Exit \n  Chose By mentioned name or Number :  ";
     while (true) {
         cin>>modify_name;
         if (modify_name=="1" || modify_name=="Load a New Image") {
@@ -460,7 +525,7 @@ int main(){
             img.loadNewImage(img_path);
             cout<<img_path<<" Loaded \n";
             cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 20:Save \t 21:Exit \n  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \n 20:Save \t 21:Exit \n  ";
             cout<<"Choose the filter you want : ";
         }
 
@@ -529,6 +594,14 @@ int main(){
         }
         else if(modify_name=="12" || modify_name=="Adjust Brightness") {
             adjustBrightness(img);
+            saving(img);
+        }
+        else if(modify_name=="13" || modify_name=="Blur") {
+            Blur(img);
+            saving(img);
+        }
+        else if(modify_name=="14" || modify_name=="Purple invert") {
+            Purpleinvert(img);
             saving(img);
         }
         else if (modify_name=="20" || modify_name=="Save") {
