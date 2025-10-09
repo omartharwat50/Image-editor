@@ -12,7 +12,22 @@
 #include"image_Class.h"
 using namespace std ;
 #include <iostream>
-using namespace std;
+
+
+void TV_Filter(Image &image) {
+   
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < image.channels; ++k) {
+                if (j % 4 == 0) {
+
+                    image(i, j, k) = image(i, j, k) * 0.1;
+                }
+            }
+
+        }
+    }
+}
 
 void To_Warm(Image &image) {
 
