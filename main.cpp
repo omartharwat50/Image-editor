@@ -14,6 +14,33 @@ using namespace std ;
 #include <iostream>
 using namespace std;
 
+void To_Warm(Image &image) {
+
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+
+            unsigned int r = image(i, j, 0) ;
+            unsigned int g = image(i, j, 1) ;
+            unsigned int b = image(i, j, 2) ;
+
+
+
+
+            image(i, j, 0)=r  ;
+
+            image(i, j, 1)=g ;
+            image(i, j, 2)=b*0.65 ;
+
+
+
+        }
+    }
+
+
+
+}
 void Purpleinvert(Image &image) {
 
 
@@ -516,7 +543,7 @@ int main(){
     string modify_name ,img_path ;
 
     cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \n 20:Save \t 21:Exit \n  Chose By mentioned name or Number :  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 20:Save \t 21:Exit \n  Chose By mentioned name or Number :  ";
     while (true) {
         cin>>modify_name;
         if (modify_name=="1" || modify_name=="Load a New Image") {
@@ -525,7 +552,7 @@ int main(){
             img.loadNewImage(img_path);
             cout<<img_path<<" Loaded \n";
             cout<<" \n 1:Load a New Image \n 2:Gray \t \t 3:Black and White \n 4:Resize Image \t 5:Invert Image \n "
-             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \n 20:Save \t 21:Exit \n  ";
+             "6:Flip Image \t \t 7:Rotate Image \n 8:Merge Image \t \t 9:Crop Image \n 10:Edge Detection \t 11:Add Frame \n 12:Adjust Brightness \t 13:Blur \n 14:Purple invert \t 15:Warm \n 20:Save \t 21:Exit \n  ";
             cout<<"Choose the filter you want : ";
         }
 
@@ -602,6 +629,10 @@ int main(){
         }
         else if(modify_name=="14" || modify_name=="Purple invert") {
             Purpleinvert(img);
+            saving(img);
+        }
+        else if(modify_name=="15" || modify_name=="Warm") {
+            To_Warm(img);
             saving(img);
         }
         else if (modify_name=="20" || modify_name=="Save") {
