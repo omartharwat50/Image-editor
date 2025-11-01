@@ -1,13 +1,3 @@
-//Firstly, we have the void functions which contain filters, save functions,
-//Then the int main function which contains the menu which runs the program and integrates it with each other, It handles the user interaction, shows the available filters, takes the input, and calls the correct filter function.
-//
-//name: Omar tharwat Mohamed    id: 20240365    filters done: flip image.
-//
-//name: Fathi Mostafa                 id:  20242239      filters done: rotate image, gray scale, black and white and the main menu.
-//name: Mohamed Hamdy        id: 20240492     filters done: inverted image, resize.
-//
-//Note: the sections are unknown because we couldn’t register due to the website fall.
-//
 
 #include"image_Class.h"
 using namespace std ;
